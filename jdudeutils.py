@@ -13,7 +13,7 @@ import os
 import hashlib
 import itertools
 import re
-from diskwalk_api import diskwalk
+
 
 try:
     from PIL import Image
@@ -837,11 +837,14 @@ def totimestamp(dt, kesaaika=False, epoch=datetime(1970, 1, 1)):
                     suomenaikaero * 3600 * 10 ** 6)) / 1e6
 
 
-def listAllFilesrecursive(path1):
-    d = diskwalk(path1)
-    files = d.enumeratePaths()
-    return files
-
+try:
+    from diskwalk_api import diskwalk
+    def listAllFilesrecursive(path1):
+        d = diskwalk(path1)
+        files = d.enumeratePaths()
+        return files
+except:
+    pass
 
 def makeTimeStampedFilPathName(path1,filenameStart, extension):
     timStampNow = formatedTimestampFromNow()
@@ -852,7 +855,6 @@ def makeTimeStampedFilPathName(path1,filenameStart, extension):
 
 
 def getSld(sflpath):
-
     sld=json.loads(lataa_tied(sflpath))
     return  sld
 
